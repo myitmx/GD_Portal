@@ -1,5 +1,6 @@
 <?php
 #Created by Myitmx on 2019/10/16.
+#Update 2021/11/17
 #Copyright © 2019年 Myitmx. All rights reserved.
 #广东天翼校园网第三方登录 PHP版
 
@@ -28,11 +29,12 @@ class xyw
 	{
 		$secret = "Eshore!@#";
 		$time = time();
-		$authenticator = $wlanuserip.$wlanacip.$mac.$time.$secret;
+		$version = "214";
+		$authenticator = $version.$wlanuserip.$wlanacip.$mac.$time.$secret;
 		$authenticator = strtoupper(md5($authenticator));
-		$post_date = array('username' => $username, 'clientip' => $wlanuserip, 'nasip' => $wlanacip, 'mac' => $mac, 'timestamp' => $time, 'authenticator' => $authenticator, 'iswifi' => "4060");
+		$post_date = array('version' => $version, 'username' => $username, 'clientip' => $wlanuserip, 'nasip' => $wlanacip, 'mac' => $mac, 'timestamp' => $time, 'authenticator' => $authenticator, 'iswifi' => "4060");
 		$post_date = json_encode($post_date);
-		$VerifyCode = xyw::post_json("http://61.140.12.23:10001/client/challenge", $post_date);
+		$VerifyCode = xyw::post_json("http://enet.10000.gd.cn:10001/client/vchallenge", $post_date);
 		$VerifyCode = json_decode($VerifyCode['1'],true);
 		if($VerifyCode['rescode'] == "0")
 		{
@@ -51,9 +53,9 @@ class xyw
 		$time = time();
 		$authenticator = $wlanuserip.$wlanacip.$mac.$time.$verificationcode.$secret;
 		$authenticator = strtoupper(md5($authenticator));
-		$post_date = array('username' => $username, 'password' => $password, 'clientip' => $wlanuserip, 'nasip' => $wlanacip, 'mac' => $mac, 'timestamp' => $time, 'authenticator' => $authenticator, 'iswifi' => "4060", 'verificationcode'=>$verificationcode);
+		$post_date = array('username' => $username, 'password' => $password, 'clientip' => $wlanuserip, 'nasip' => $wlanacip, 'mac' => $mac, 'timestamp' => $time, 'authenticator' => $authenticator, 'iswifi' => "1050", 'verificationcode'=>$verificationcode);
 		$post_date = json_encode($post_date);
-		$Login_return = xyw::post_json("http://61.140.12.23:10001/client/login", $post_date);
+		$Login_return = xyw::post_json("http://125.88.59.131:10001/client/login", $post_date);
 		return $Login_return['1'];
 	}
 
@@ -65,7 +67,7 @@ class xyw
 		$authenticator = strtoupper(md5($authenticator));
 		$post_date = array('username' => $username, 'clientip' => $wlanuserip, 'nasip' => $wlanacip, 'mac' => $mac, 'timestamp' => $time, 'authenticator' => $authenticator);
 		$post_date = json_encode($post_date);
-		$Logout_return = xyw::post_json("http://61.140.12.23:10001/client/logout", $post_date);
+		$Logout_return = xyw::post_json("http://125.88.59.131:10001/client/logout", $post_date);
 		return $Logout_return['1'];
 	}
 }
